@@ -14,3 +14,11 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+// admin panel route
+
+Route::view('/admin', 'admin.dashboard')->name('adminpanel')->middleware('auth');
