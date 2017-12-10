@@ -17,9 +17,24 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+        // if (Auth::guard($guard)->check()) {
+        //     return redirect('/home');
+        // }
+// check if its admin or normal user so when they are loged in but want to access login page redirect them to 
+        //correct page
+        switch ($guard) {
+            case 'admin':
+            if(Auth::guard($guard)->check()){
+                return redirect()->route('admin.dashboard');
+            }
+            break;
+
+            default:
+            if(Auth::guard($guard)->check()){
+                return redirect('/home');
+            }
         }
+
 
         return $next($request);
     }
