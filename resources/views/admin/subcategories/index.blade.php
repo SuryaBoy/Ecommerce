@@ -32,7 +32,7 @@
                                 <td>{{App\Category::where('id',$c->category_id)->first()->name}}</td>
 
                                 <td>{{$c->name}}</td>
-                                <td><a  href="edit/{{$c->id}}"><i class="fa fa-edit"></i></a>
+                                <td><a  href=" {{ route('subcategories.edit', $c->id) }}"><i class="fa fa-edit"></i></a>
 
                                     &middot;<a onclick='return ConfirmDelete()' href="{{url('subcategories/destroy',$c->id)}}" class="text-danger fa fa-remove"></a> </td>
 

@@ -36,6 +36,7 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+
         parent::report($exception);
     }
 
@@ -48,6 +49,36 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+
+
+        // for handling authenticationexception for admin and normal users
+
+        $class = get_class($exception);
+
+        switch($class) {
+            case 'Illuminate\Auth\AuthenticationException':
+
+            // if request expectsJson send thiss
+                if($request->expectsJson()){
+                    return response()->json(['message' => $exception->getMessage()], 401);
+                }
+            // else if it is a web request do this
+                $guard = array_get($exception->guards(), 0);
+                switch ($guard) {
+                    case 'admin':
+                        $login = 'admin.login';
+                        break;
+                    default:
+                        $login = 'login';
+                        break;
+                }
+
+                return redirect()->route($login);
+            break;
+        }
+
+        // end admin and normal users
+
         return parent::render($request, $exception);
     }
 }

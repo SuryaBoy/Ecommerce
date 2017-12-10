@@ -12,10 +12,6 @@ class SubCategoriesController extends Controller
 {
     public function index()
     {
-//        $subcategory = SubCategory
-//        $subcategory = DB::table('sub_categories')
-//            ->join('categories','category_id','=','categories.id')
-//            ->get();
         $subcategories = SubCategory::all();
         return view('admin.subcategories.index',compact('subcategories'));
 

@@ -2,15 +2,25 @@
 
 @section('content')
 
-    <form action="{{ route('products.update', $products->id) }}" method="POST">
+    <form action="{{ route('product.update', $products->id) }}" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="_token" value="{{csrf_token()}}"><br/>
         {{method_field('PUT')}}
 
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
-                <div class="form-group col-md-6">
+                <div class="form-group">
                     <label for="name" class="col-form-label">Product Name</label>
                     <input type="text" name="name" class="form-control" value="{{$products->name}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <input type="file" id="image" name="image" value="image" >
+                </div>
+
+                <div class="form-group">
+                    <label for="price" class="col-form-label">Product Price</label>
+                    <input type="text" name="price" class="form-control" value="{{$products->price}}">
                 </div>
 
 

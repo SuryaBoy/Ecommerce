@@ -1,9 +1,12 @@
 <!DOCTYPE html>
+
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Dashboard</title>
+
+  <title>Ecommerce.dev @yield('title')</title>
+
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -14,9 +17,10 @@
   <link rel="stylesheet" href="{{asset('dashboard/bower_components/Ionicons/css/ionicons.min.css')}}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('dashboard/dist/css/AdminLTE.min.css')}}">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="{{asset('dashboard/dist/css/skins/_all-skins.min.css')}}">
+{{--<<<<<<< HEAD--}}
+  {{--<!-- AdminLTE Skins. Choose a skin from the css/skins--}}
+       {{--folder instead of downloading all of them to reduce the load. -->--}}
+  {{--<link rel="stylesheet" href="{{asset('dashboard/dist/css/skins/_all-skins.min.css')}}">--}}
   <!-- Morris chart -->
   <link rel="stylesheet" href="{{asset('dashboard/bower_components/morris.js/morris.css')}}">
   <!-- jvectormap -->
@@ -25,6 +29,12 @@
   <link rel="stylesheet" href="{{asset('dashboard/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="{{asset('dashboard/bower_components/bootstrap-daterangepicker/daterangepicker.css')}}">
+
+
+  <link rel="stylesheet" href="{{asset('dashboard/dist/css/style.css')}}">
+
+  <link rel="stylesheet" href="{{asset('dashboard/dist/css/skins/skin-blue.min.css')}}">
+
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="{{asset('dashboard/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
   <!-- iCheck -->
@@ -34,13 +44,6 @@
   <link rel="stylesheet" href="{{asset('dashboard/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-
-
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{asset('dashboard/bower_components/font-awesome/css/font-awesome.min.css')}}">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="{{asset('dashboard/bower_components/Ionicons/css/ionicons.min.css')}}">
   <!-- DataTables -->
   <link rel="stylesheet" href="{{asset('dashboard/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
 
@@ -63,11 +66,11 @@
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="{{route('admin.dashboard')}}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
+      <span class="logo-mini"><b>E</b>Dev</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE</span>
+      <span class="logo-lg"><b>Ecommerce.Dev</b></span>
     </a>
 
     <!-- Header Navbar -->
@@ -95,7 +98,7 @@
                     <a href="#">
                       <div class="pull-left">
                         <!-- User Image -->
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="{{asset('dashboard/dist/img/avatar.jpg')}}" class="img-circle" alt="User Image">
                       </div>
                       <!-- Message title and timestamp -->
                       <h4>
@@ -180,49 +183,61 @@
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="{{asset('dashboard/dist/img/avatar.png' )}}" class="user-image" alt="User Image">
+
+              <img src="{{asset('dashboard/dist/img/avatar.jpg')}}" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs">{{Auth::guard('admin')->user()->name}}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="{{asset('dashboard/dist/img/avatar.png' )}}" class="img-circle" alt="User Image">
+                <img src="{{asset('dashboard/dist/img/avatar.jpg')}}" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  {{Auth::guard('admin')->user()->name}} - {{Auth::guard('admin')->user()->job_title}}
+                  <small>Member since {{Auth::guard('admin')->user()->created_at->format('M d Y')}}</small>
                 </p>
               </li>
               <!-- Menu Body -->
+              @if(Auth::guard('admin')->user()->role_id==1)
               <li class="user-body">
                 <div class="row">
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
+                  <div class="col-xs-6 text-left">
+                    <a href="{{route('admin.create')}}">Create Admin</a>
                   </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
+                  <div class="col-xs-6 text-right">
+                    <a href="{{route('admin.show')}}">Show Admins</a>
                   </div>
                 </div>
                 <!-- /.row -->
               </li>
+              @endif
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
                   {{--<a href="{{route('admin.profile')}}" class="btn btn-default btn-flat">Profile</a>--}}
                 </div>
                 <div class="pull-right">
-                  <a href="{{ route('logout') }}"
-                     onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                    <i class="glyphicon glyphicon-log-out"></i> <span>Log Out</span>
+{{--<<<<<<< HEAD--}}
+                  {{--<a href="{{ route('logout') }}"--}}
+                     {{--onclick="event.preventDefault();--}}
+                                                     {{--document.getElementById('logout-form').submit();">--}}
+                    {{--<i class="glyphicon glyphicon-log-out"></i> <span>Log Out</span>--}}
+                  {{--</a>--}}
+
+                  {{--<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">--}}
+                    {{--{{ csrf_field() }}--}}
+{{--=======--}}
+                  {{--<!-- <a href="#" class="btn btn-default btn-flat">Sign out</a> -->--}}
+
+                  <a href="{{ route('admin.logout') }}"
+                      onclick="event.preventDefault();
+                               document.getElementById('logout-form').submit();" class="btn btn-default btn-flat">
+                      Logout
                   </a>
 
-                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    {{ csrf_field() }}
+                  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                      {{ csrf_field() }}
                   </form>
                 </div>
               </li>
@@ -245,11 +260,11 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          {{--<img src="public/dist/img/admin.png" class="img-circle" alt="User Image">--}}
-          <img src=" {{asset('dashboard/dist/img/avatar.png' )}} "  height="32px" width="32px" position="absolute" float="left" border-radius="50%" margin-right="25px" >
+          <img src="{{asset('dashboard/dist/img/avatar.jpg')}}" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>{{ Auth::user()->name }}</p>
+          <p>{{Auth::guard('admin')->user()->name}}</p>
+          <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -271,7 +286,7 @@
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
         <li>
-          <a href="{{route('admin.index')}}">
+          <a href="{{route('admin.dashboard')}}">
             <i class="glyphicon glyphicon-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
@@ -328,7 +343,7 @@
         <small>Optional description</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a  href="{{route('admin.index')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a  href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li class="active">Here</li>
       </ol>
     </section>
@@ -354,7 +369,7 @@
       Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; {{date('Y')}} <a href="#">Company</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->

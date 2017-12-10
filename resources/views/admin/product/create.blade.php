@@ -19,16 +19,16 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="subcategory_id">
-                            Sub Category
-                        </label>
-                        <select name="subcategory_id" class="form-control select2" style="width: 100%;">
-                            @foreach($subcategories as $c)
-                                <option  value="{{$c->id}}">{{$c->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    {{--<div class="form-group">--}}
+                        {{--<label for="subcategory_id">--}}
+                            {{--Sub Category--}}
+                        {{--</label>--}}
+                        {{--<select name="subcategory_id" class="form-control select2" style="width: 100%;">--}}
+                            {{--@foreach($subcategories as $c)--}}
+                                {{--<option  value="{{$c->id}}">{{$c->name}}</option>--}}
+                            {{--@endforeach--}}
+                        {{--</select>--}}
+                    {{--</div>--}}
 
 
 
