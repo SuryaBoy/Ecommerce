@@ -25,9 +25,9 @@ Route::post('/users/logout', 'Auth\LoginController@userLogout')->name('user.logo
 //Route::view('/admin', 'admin.dashboard')->name('adminpanel')->middleware('auth');
 
 Route::resource('categories','CategoriesController');
-Route::get('categories/destroy/{id}','CategoriesController@destroy');
+
 Route::resource('subcategories','SubCategoriesController');
-Route::get('subcategories/destroy/{id}','SubCategoriesController@destroy');
+
 
 Route::resource('brand','BrandController');
 Route::get('brand/destroy/{id}','BrandController@destroy');
@@ -36,6 +36,7 @@ Route::resource('product','ProductController');
 Route::get('product/destroy/{id}','ProductController@destroy');
 
 
+// admin routes
 Route::prefix('admin')->group(function(){
 
 	Route::get('/login','Auth\AdminLoginController@showLoginForm')->name('admin.login');

@@ -28,8 +28,14 @@
 
 						@foreach($categories as $c)
 							<tr>
-								<td>{{$c->name}}</td>
-								<td><a href=" {{ route('categories.edit', $c->id) }}"><i class="fa fa-edit"></i></a>
+								<td>
+									<a href="{{route('categories.show',$c->id)}}">
+										{{$c->name}}
+									</a>
+								</td>
+
+								<td>
+									<a href=" {{ route('categories.edit', $c->id) }}"><i class="fa fa-edit"></i></a>
 									&middot;<a onclick='return ConfirmDelete()' href="{{url('categories/destroy',$c->id)}}" class="text-danger fa fa-remove"></a>  </td>
 
 							</tr>
