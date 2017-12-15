@@ -3,26 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Product;
+use App\Brand;
+use App\SubCategory;
+use App\Category;
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        $products=Product::all();
+        $subcategories=SubCategory::all();
+        $brands = Brand::all();
+        return view('home',compact('products','subcategories','brands'));
+    }
+
+    public function getCat(Request $request)
+    {
+        if($request->ajax())
+        {
+            $data = Category::where('name', $request->name)->get();
+            return response()->json($data);
+        }
     }
 }

@@ -18,16 +18,19 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('getCat','HomeController@getCat');
+
 Route::post('/users/logout', 'Auth\LoginController@userLogout')->name('user.logout'); 
 
 // admin panel route
 
 //Route::view('/admin', 'admin.dashboard')->name('adminpanel')->middleware('auth');
 
-Route::resource('categories','CategoriesController');
-Route::get('categories/destroy/{id}','CategoriesController@destroy');
-Route::resource('subcategories','SubCategoriesController');
-Route::get('subcategories/destroy/{id}','SubCategoriesController@destroy');
+//Route::resource('categories','CategoriesController');
+//Route::get('categories/destroy/{id}','CategoriesController@destroy');
+//Route::resource('subcategories','SubCategoriesController');
+//Route::get('subcategories/destroy/{id}','SubCategoriesController@destroy');
 
 Route::resource('brand','BrandController');
 Route::get('brand/destroy/{id}','BrandController@destroy');
