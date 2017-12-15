@@ -28,10 +28,6 @@ class CreateBrandsTable extends Migration
      */
     public function down()
     {
-        Schema::table('products',function(Blueprint $table)
-        {
-            $table->dropForeign('brand_id');
-        });
         Schema::dropIfExists('brands');
     }
 }

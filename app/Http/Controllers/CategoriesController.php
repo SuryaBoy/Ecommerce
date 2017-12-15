@@ -18,10 +18,15 @@ class CategoriesController extends Controller
         return view('admin.categories.create');
     }
 
+    public function show($id){
+        $category = Category::findOrFail($id);
+        return view ('admin.categories.show',compact('category'));
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|min:3|unique:categories',
         ]);
         $categories= new Category();
         $categories->name = $request->name;

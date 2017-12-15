@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\SubCategory;
 use Illuminate\Support\Facades\DB;
+use Session;
 
 
 class SubCategoriesController extends Controller
@@ -14,7 +15,6 @@ class SubCategoriesController extends Controller
     {
         $subcategories = SubCategory::all();
         return view('admin.subcategories.index',compact('subcategories'));
-
     }
 
     public function create(Request $request)
@@ -23,16 +23,25 @@ class SubCategoriesController extends Controller
         return view('admin.subcategories.create',compact('subcategories'));
     }
 
+    public function show($id)
+    {
+        
+    }
+
     public function store(Request $request)
     {
+
+        $this->validate($request,[
+            'name'=>'required|min:3|max:191|unique:sub_categories',
+        ]);
+
         $subcategories= new SubCategory();
         $subcategories->category_id = $request->category_id;
         $subcategories->name = $request->name;
         $subcategories->slug = str_replace(" ", "-", $subcategories->name);
-
-//        dd($subcategories);
         $subcategories->save();
-        return redirect()->route('subcategories.index');
+        Session::flash('status', "New Sub Category $request->name successfully Created !");
+        return redirect()->back();
     }
 
     public function edit($id)
@@ -43,26 +52,25 @@ class SubCategoriesController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $this->validate($request,[
-            'name'=>'required|min:3|unique:categories',
+            'name'=>'required|min:3|max:191|unique:sub_categories',
         ]);
 
         $subcategories = SubCategory::findOrFail($id);
         $subcategories->name = $request->name;
+        $subcategories->slug = str_replace(" ", "-", $subcategories->name);
         $subcategories->save();
-
-        return redirect()->route('subcategories.index');
+        Session::flash('status', "Sub Category $request->name successfully Updated !");
+        return redirect()->back();
     }
 
     public function destroy($id)
     {
         $subcategories = SubCategory::findOrFail($id);
-        $destroy = $subcategories->delete();
-        if($destroy){
-            return redirect()->route('subcategories.index');
-        }
-
+        Session::flash('status', "Sub Category $subcategories->name successfully Deleted !");
+        $subcategories->delete();
+        return redirect()->back();
     }
-
 
 }
