@@ -61,9 +61,7 @@ class CategoriesController extends Controller
 
         // Finally, delete this category...
         $destroy = $categories->delete();
-        if($destroy){
-            return redirect()->route('categories.index');
-        }
+        return redirect()->route('categories.index');
     }
 }
 

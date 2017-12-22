@@ -20,6 +20,7 @@
 
 	<div class="col-xs-12">
 		<a href="#create-sub-cat" data-toggle="collapse" class="btn btn-primary">Add Sub Categories</a>
+		<a href="{{ url()->previous() }}" class="btn btn-success pull-right">Back</a>
 
 		<div id="create-sub-cat" class="collapse" style="margin-top: 20px;">
             <form method="post" action="{{route('subcategories.store')}}">

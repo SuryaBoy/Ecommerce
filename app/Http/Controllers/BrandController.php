@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Brand;
+use Session;
 
 class BrandController extends Controller
 {
@@ -22,12 +23,13 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|min:2|max:191|unique:brands',
         ]);
         $brands= new Brand();
         $brands->name = $request->name;
         $brands->slug = str_replace(" ", "-", $brands->name);
         $brands->save();
+        Session::flash('status', "New Brand $request->name successfully Created !");
         return redirect()->route('brand.index');
     }
 
@@ -39,14 +41,19 @@ class BrandController extends Controller
 
     public function update(Request $request, $id)
     {
+        $brand = Brand::findOrFail($id);
         $this->validate($request,[
-            'name'=>'required|min:3|unique:brands',
+            'name' => ['required','min:2','max:191',
+                        Rule::unique('brands')->ignore($brand->id),],
+        ],
+        [
+            'name.unique' => "The name $request->name has already been used. Please use another name",
         ]);
 
-        $brands = Brand::findOrFail($id);
-        $brands->name = $request->name;
-        $brands->save();
-
+        
+        $brand->name = $request->name;
+        $brand->save();
+        Session::flash('status', "Brand $request->name successfully Updated !");
         return redirect()->route('brand.index');
     }
 
@@ -54,10 +61,9 @@ class BrandController extends Controller
     {
         $brands = Brand::findOrFail($id);
 
+        Session::flash('status', "Brand $subcategories->name successfully Deleted !");
         // Finally, delete this category...
-        $destroy = $brands->delete();
-        if($destroy){
-            return redirect()->route('brand.index');
-        }
+        $brands->delete();
+        return redirect()->route('brand.index');
     }
 }

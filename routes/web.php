@@ -30,7 +30,6 @@ Route::resource('subcategories','SubCategoriesController');
 
 
 Route::resource('brand','BrandController');
-Route::get('brand/destroy/{id}','BrandController@destroy');
 
 Route::resource('product','ProductController');
 Route::get('product/destroy/{id}','ProductController@destroy');

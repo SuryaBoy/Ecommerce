@@ -52,7 +52,7 @@
 
         <li>
           <a href="{{route('brand.index')}}">
-            <i class="fa fa-bars"></i><span>Brand</span>
+            <i class="glyphicon glyphicon-star"></i><span>Brand</span>
           </a>
         </li>
 

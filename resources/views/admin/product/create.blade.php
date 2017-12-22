@@ -17,34 +17,59 @@
                                 <option  value="{{$b->id}}">{{$b->name}}</option>
                             @endforeach
                         </select>
+                        @if($errors->first('brand_id'))
+                            <label class="help-block">
+                                <strong>{{$errors->first('brand_id')}}</strong>
+                            </label>
+                        @endif
                     </div>
 
-                    {{--<div class="form-group">--}}
-                        {{--<label for="subcategory_id">--}}
-                            {{--Sub Category--}}
-                        {{--</label>--}}
-                        {{--<select name="subcategory_id" class="form-control select2" style="width: 100%;">--}}
-                            {{--@foreach($subcategories as $c)--}}
-                                {{--<option  value="{{$c->id}}">{{$c->name}}</option>--}}
-                            {{--@endforeach--}}
-                        {{--</select>--}}
-                    {{--</div>--}}
+                    <div class="form-group">
+                        <label for="sub_category_id">
+                            Sub Category
+                        </label>
+                        <select name="sub_category_id" class="form-control select2" style="width: 100%;">--}}
+                            @foreach($sub_categories as $c)
+                                <option  value="{{$c->id}}">{{$c->name}}</option>
+                            @endforeach
+                        </select>
+                        @if($errors->first('sub_category_id'))
+                            <label class="help-block">
+                                <strong>{{$errors->first('sub_category_id')}}</strong>
+                            </label>
+                        @endif
+                    </div>
 
 
 
                     <div class="form-group">
                         <label>Product Name/Model</label>
                         <input type="text" name="name" class="form-control"/>
+                        @if($errors->first('name'))
+                            <label class="help-block">
+                                <strong>{{$errors->first('name')}}</strong>
+                            </label>
+                        @endif
                     </div>
 
                     <div class="form-group">
                         <label for="image">Image</label>
                         <input type="file" class="form-control" name="image">
+                        @if($errors->first('image'))
+                            <label class="help-block">
+                                <strong>{{$errors->first('image')}}</strong>
+                            </label>
+                        @endif
                     </div>
 
                     <div class="form-group">
                         <label>Price</label>
                         <input type="text" name="price" class="form-control"/>
+                        @if($errors->first('price'))
+                            <label class="help-block">
+                                <strong>{{$errors->first('price')}}</strong>
+                            </label>
+                        @endif
                     </div>
 
                     <div class="form-group">
