@@ -39,10 +39,11 @@
 							<tr>
 								<td>{{$c->name}}</td>
 								<td><a href=" {{ route('brand.edit', $c->id) }}" class="btn btn-success">Edit</a>
-									&middot;
-									<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#warningModal{{$c->id}}">Delete</button>  
+									<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#warningModal{{$c->id}}">Delete</button>
+									<a href="{{route('product.create.with.brand', $c->id)}}" class="btn btn-primary">
+										Add Product
+									</a>
 								</td>
-
 							</tr>
 						@empty
 							<tr>

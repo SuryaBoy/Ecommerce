@@ -16,18 +16,17 @@ Route::post('/users/logout', 'Auth\LoginController@userLogout')->name('user.logo
 // admin panel route
 
 //Route::view('/admin', 'admin.dashboard')->name('adminpanel')->middleware('auth');
+Route::middleware(['auth:admin'])->group(function(){
 
+	Route::resource('categories','CategoriesController');
+	Route::resource('subcategories','SubCategoriesController');
+	Route::resource('brand','BrandController');
+	Route::resource('product','ProductController');
+	Route::get('product/create/{brand}','ProductController@create_with_brand')->name('product.create.with.brand');
 
-Route::resource('categories','CategoriesController');
-Route::get('categories/destroy/{id}','CategoriesController@destroy');
-Route::resource('subcategories','SubCategoriesController');
-Route::get('subcategories/destroy/{id}','SubCategoriesController@destroy');
+	Route::get('ajax/subcategories/{category}','AjaxController@subcategories')->name('ajax.subcategories');
 
-Route::resource('brand','BrandController');
-
-Route::resource('product','ProductController');
-Route::get('product/destroy/{id}','ProductController@destroy');
-
+});
 
 // admin routes
 Route::prefix('admin')->group(function(){

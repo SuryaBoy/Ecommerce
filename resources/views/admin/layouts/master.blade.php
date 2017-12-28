@@ -21,6 +21,25 @@
       </ol>
     </section>
 
+<!-- for alerts -->
+      @if (session('status'))
+      <div class="col-xs-12" style="margin-top: 20px;">
+        <div class="alert alert-success alert-dismissable fade in">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              {{ session('status') }}
+          </div>
+      </div>
+      @endif
+
+      @if (session('failure'))
+      <div class="col-xs-12" style="margin-top: 20px;">
+        <div class="alert alert-danger alert-dismissable fade in">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              {{ session('failure') }}
+          </div>
+      </div>
+      @endif
+
     <!-- Main content -->
     <section class="content container-fluid">
       @yield('content')
