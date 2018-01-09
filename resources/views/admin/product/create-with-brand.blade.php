@@ -36,10 +36,8 @@
                         <label for="sub_category_id">
                             Sub Category
                         </label>
-                        <select name="sub_category_id" class="form-control select2" style="width: 100%;">
-                            @foreach($sub_categories as $c)
-                                <option  value="{{$c->id}}">{{$c->name}}</option>
-                            @endforeach
+                        <select id="sub-cat" name="sub_category_id" class="form-control">
+                            <option id="sub-dis" disabled selected>Select Sub Categories</option>
                         </select>
                         @if($errors->first('sub_category_id'))
                             <label class="help-block">
@@ -114,17 +112,45 @@
 <script type="text/javascript">
     
     $(document).ready(function(){
-        $("#category").change(function(){
-            
+        //check if the selected option in category is not disabled option
+        if(!$("#category").val()==""){
+            var c_id = $("#category").val();
             $.ajax({
                 /* the route pointing to the post function */
-                url: '{{route('ajax.subcategories',)}}',
+                url:'{{route('ajax.subcategories',"")}}/'+c_id,
+                // url:'http://ecommerce.dev/ajax/subcategories/'+c_id,
                 type: 'GET',
 
-                success: function (data,status) {
-                    // alert("Data: " + data + "\nStatus: " + status);
-                    alert(data.msg);
-                    $(location).attr('href',data.url);
+                success: function (response) {
+                    var txt="";
+                    for (x in response){
+                        // alert(response[x].id);
+                        // console.log(response);
+                        txt +="<option value="+response[x].id+">"+response[x].name+"</option>"
+                    }
+                    $("#sub-cat").empty();
+                    $("#sub-cat").append(txt);
+                }
+            });
+        }
+        // if the category option is changed then accordingly change the sub category options
+        $("#category").change(function(){
+            var c_id = $("#category").val();
+           $.ajax({
+                /* the route pointing to the post function */
+                url:'{{route('ajax.subcategories',"")}}/'+c_id,
+                // url:'http://ecommerce.dev/ajax/subcategories/'+c_id,
+                type: 'GET',
+
+                success: function (response) {
+                    var txt="";
+                    for (x in response){
+                        // alert(response[x].id);
+                        // console.log(response);
+                        txt +="<option value="+response[x].id+">"+response[x].name+"</option>"
+                    }
+                    $("#sub-cat").empty();
+                    $("#sub-cat").append(txt);
                 }
             });
 

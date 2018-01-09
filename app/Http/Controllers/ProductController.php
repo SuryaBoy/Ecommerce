@@ -31,9 +31,8 @@ class ProductController extends Controller
 
     public function create_with_brand(Request $request,$b_id)
     {
-        $sub_categories = SubCategory::all();
         $categories = Category::all();
-        return view('admin.product.create-with-brand',compact('b_id','sub_categories','categories')); 
+        return view('admin.product.create-with-brand',compact('b_id','categories')); 
     }
 
     public function store(Request $request)
