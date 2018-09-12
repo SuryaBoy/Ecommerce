@@ -16,8 +16,26 @@
         @yield('content.header')
       </h1>
       <ol class="breadcrumb">
-        <li><a  href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">Here</li>
+        @if (session('breadcrumb'))
+            @for($i = 0;$i < sizeof(session('breadcrumb'));$i++)
+              @if($i==sizeof(session('breadcrumb'))-1)
+                @foreach(session('breadcrumb')[$i] as $key => $value)
+                  @if($key=='active')
+                    <li class="active">{{$value}}</li>
+                  @else
+                    <li>
+                      <a href="{{$value}}">{{$key}}</a>
+                    </li>
+                  @endif
+                @endforeach
+              @else
+                <li><a href="{{session('breadcrumb')[$i][key(session('breadcrumb')[$i])]}}">{{key(session('breadcrumb')[$i])}}</a></li>
+              @endif
+            @endfor
+        @endif
+
+<!--         <li><a  href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li> -->
       </ol>
     </section>
 

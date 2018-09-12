@@ -22,9 +22,12 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->string('price')->default(0);
+            $table->integer('price')->default(0);
             $table->unsignedInteger('quantity')->default(1);
             $table->string('image');
+
+            $table->unsignedInteger('admin_id')->nullable();
+            $table->foreign('admin_id')->references('id')->on('admins')->onUpdate('cascade')->onDelete('set null');
 
             $table->timestamps();
         });

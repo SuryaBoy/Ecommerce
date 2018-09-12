@@ -5,13 +5,25 @@
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12">
+
+	      @if (session('status'))
+	      <div class="col-xs-12" style="margin-top: 20px;">
+	        <div class="alert alert-success alert-dismissable fade in">
+	              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	              {{ session('status') }}
+	          </div>
+	      </div>
+	      @endif
+
+	    <h1>User Administration <a href="{{ route('roles.index') }}" class="btn btn-default pull-right">Roles</a>
+	    <a href="{{ route('permissions.index') }}" class="btn btn-default pull-right">Permissions</a></h1>
 			
 			<table class="table table-striped table-responsive">
 			    <thead>
 			      <tr>
 			        <th>Name</th>
 			        <th>Email</th>
-			        <th>Role_Id</th>
+			        <th>Roles</th>
 			        <th>Action</th>
 			      </tr>
 			    </thead>
@@ -20,9 +32,11 @@
 			      <tr>
 			        <td>{{$admin->name}}</td>
 			        <td>{{$admin->email}}</td>
-			        <td>{{$admin->role_id}}</td>
-					<td>						<!-- Trigger the modal with a button -->
-					<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#warningModal{{$admin->id}}">Delete</button>
+			        <td>{{$admin->roles()->pluck('name')->implode(' ') }}</td>
+					<td>
+						<a href="{{ route('admin.edit',$admin->id) }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit Role</a>						
+							<!-- Trigger the modal with a button -->
+						<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#warningModal{{$admin->id}}">Delete</button>
 					</td>
 			      </tr>
 			    </tbody>

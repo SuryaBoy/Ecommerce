@@ -6,18 +6,23 @@ use Illuminate\Http\Request;
 use App\Brand;
 use Session;
 
-class BrandController extends Controller
+class BrandController extends ExtendController
 {
     public function index()
     {
-        $brands = Brand::all();
-        return view('admin.brand.index',compact('brands'));
+        $array = Session::pull('breadcrumb');
+        Session::forget('breadcrumb');
+        Session::push('breadcrumb',$array[0]);
+        Session::push('breadcrumb',['Brands'=>route('brand.index'),'active'=>'List']);
+        $this->website['brands'] = Brand::all();
+        return view('admin.brand.index',$this->website);
     }
 
 
     public function create()
     {
-        return view('admin.brand.create');
+        Session::push('breadcrumb',['Create'=>route('brand.create'),'active'=>'Create']);
+        return view('admin.brand.create',$this->website);
     }
 
     public function store(Request $request)
@@ -35,8 +40,9 @@ class BrandController extends Controller
 
     public function edit($id)
     {
-        $brands = Brand::findOrFail($id);
-        return view('admin.brand.edit',compact('brands'));
+        Session::push('breadcrumb',['Edit'=>route('brand.edit',$id),'active'=>'Edit']);
+        $this->website['brands'] = Brand::findOrFail($id);
+        return view('admin.brand.edit',$this->website);
     }
 
     public function update(Request $request, $id)

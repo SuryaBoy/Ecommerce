@@ -58,18 +58,24 @@
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
+              <span class="label label-warning">
+                {{sizeof($notifications)}}
+              </span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">You have 10 notifications</li>
+              <li class="header">You have {{sizeof($notifications)}} Order notifications</li>
               <li>
                 <!-- Inner Menu: contains the notifications -->
                 <ul class="menu">
-                  <li><!-- start notification -->
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                    </a>
-                  </li>
+                  @forelse($notifications as $notification)
+                      <li><!-- start notification -->
+                        <a href={{route('order.showOrderDetails',$notification->order_id)}}>
+                          <i class="fa fa-users text-aqua"></i>New Order with Order Id {{$notification->order_id}}
+                        </a>
+                      </li>
+                  @empty
+                  No Recent Orders
+                  @endforelse
                   <!-- end notification -->
                 </ul>
               </li>
@@ -134,7 +140,7 @@
                 </p>
               </li>
               <!-- Menu Body -->
-              @if(Auth::guard('admin')->user()->role_id==1)
+              
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-6 text-left">
@@ -146,7 +152,7 @@
                 </div>
                 <!-- /.row -->
               </li>
-              @endif
+              
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">

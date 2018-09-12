@@ -14,6 +14,7 @@
                     <div class="table-responsive">
                         <table id="example1" align=center  class='table table-striped table-bordered'>
                             <thead>
+                            <th>###</th>
                             <th>Brand</th>
                             <th>Product Name</th>
                             <th>Price</th>
@@ -24,11 +25,12 @@
 
                             @forelse($products as $c)
                                 <tr>
+                                    <td>{{$loop->iteration}}</td>
                                     <td>{{App\Brand::where('id',$c-> brand_id)->first()->name}}</td>
                                     <td>{{$c->name}}</td>
                                     <td>{{$c->price}}</td>
                                     <td>{{$c->quantity}}</td>
-                                    <td><img src=" {{$c->image()}} " alt="Images" width="150px" ></td>
+                                    <td><img src=" {{$c->image()}} " alt="Images" width="80px" ></td>
                                     <td>
                                         <a  href=" {{ route('product.edit', $c->id) }}">
                                             <i class="fa fa-edit"></i>
@@ -75,6 +77,9 @@
 
                     @endforelse
 
+                </div>
+                <div class="box-footer with-border text-center">
+                    {{ $products->links() }}
                 </div>
             </div>
         </div>

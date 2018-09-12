@@ -11,40 +11,76 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 use Session;
 use Illuminate\Validation\Rule;
+use Auth;
 
 
-class ProductController extends Controller
+class ProductController extends ExtendController
 {
 
     public function index()
     {
-        $products = Product::all();
-        return view('admin.product.index',compact('products'));
+
+        if(!Auth::guard('admin')->user()->hasPermissionTo('View Product')){
+            Session::flash('failure',"You Do Not Have Correct Permission");
+            return redirect()->back();
+        }
+
+        $array = Session::pull('breadcrumb');
+        Session::forget('breadcrumb');
+        Session::push('breadcrumb',$array[0]);
+        Session::push('breadcrumb',['Product'=>route('product.index'),'active'=>'List']);
+        $user = Auth::guard('admin')->user();
+        if($user->hasRole('Vendor')){
+            $this->website['products'] = Product::where('admin_id',$user->id)->latest('created_at')->paginate($this->default_pagination_limit);
+            return view('admin.product.index',$this->website);
+        }
+        $this->website['products'] = Product::latest('created_at')->paginate($this->default_pagination_limit);
+        return view('admin.product.index',$this->website);
     }
 
     public function create(Request $request)
     {
-        $brands = Brand::all();
-        $sub_categories = SubCategory::all();
-        return view('admin.product.create',compact('brands','sub_categories'));
+
+        if(!Auth::guard('admin')->user()->hasPermissionTo('Create Product')){
+            Session::flash('failure',"You Do Not Have Correct Permission");
+            return redirect()->back();
+        }
+
+        Session::push('breadcrumb',['Add Product'=>route('product.create'),'active'=>'Create']);
+        $this->website['brands'] = Brand::all();
+        $this->website['sub_categories'] = SubCategory::all();
+        return view('admin.product.create',$this->website);
     }
 
     public function create_with_brand(Request $request,$b_id)
     {
-        $categories = Category::all();
-        return view('admin.product.create-with-brand',compact('b_id','categories')); 
+
+        if(!Auth::guard('admin')->user()->hasPermissionTo('Create Product')){
+            Session::flash('failure',"You Do Not Have Correct Permission");
+            return redirect()->back();
+        }
+
+        Session::push('breadcrumb',['Add Product'=>route('product.create'),'active'=>'Create']);
+        $this->website['categories'] = Category::all();
+        $this->website['b_id'] = $b_id;
+        return view('admin.product.create-with-brand',$this->website); 
     }
 
     public function store(Request $request)
     {
 
+        if(!Auth::guard('admin')->user()->hasPermissionTo('Create Product')){
+            Session::flash('failure',"You Do Not Have Correct Permission");
+            return redirect()->back();
+        }
+
         $this->validate($request, [
             'name' => 'required|min:2|max:191|unique:products',
-            'price' => 'required|max:191',
+            'price' => 'required|integer',
             'image' => 'required|image',
             'brand_id' => 'required|exists:brands,id',
             'sub_category_id' => 'required|exists:sub_categories,id',
-            'description' => 'nullable|alpha_dash',
+            'description' => 'nullable',
             'quantity' => 'required|numeric',
         ]);
 
@@ -53,12 +89,17 @@ class ProductController extends Controller
         $destination = 'files';
         $product = new Product();
 
+        if(Auth::guard('admin')->user()->hasRole('Vendor')){
+            $product->admin_id = Auth::guard('admin')->user()->id;
+        }
+
         $product->brand_id = $request->brand_id;
         $product->sub_category_id = $request->sub_category_id;
         $product->name= $request->name;
         $product->slug = str_replace(" ", "-", $product->name);
         $product->price= $request->price;
         $product->quantity = $request->quantity;
+        $product->description = $request->description;
 
         $image_path = upload_file($request->image,$destination,'files','prod');
         $product->image = $image_path;
@@ -70,22 +111,40 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::find($id);
-        $brands = Brand::all();
-        $sub_categories = SubCategory::all();
-        return view("admin.product.edit",compact('product','brands','sub_categories'));
+        $this->website['product'] = Product::find($id);
+        $user = Auth::guard('admin')->user();
+
+        if(!$user->hasPermissionTo('Edit Product') && $user->id != $this->website['product']->admin_id){
+            Session::flash('failure',"You Do Not Have Correct Permission");
+            return redirect()->back();
+        }
+
+        Session::push('breadcrumb',['Edit Product'=>route('product.edit',$id),'active'=>'Edit']);
+        
+        $this->website['brands'] = Brand::all();
+        $this->website['sub_categories'] = SubCategory::all();
+        return view("admin.product.edit",$this->website);
     }
 
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
+        $user = Auth::guard('admin')->user();
+
+        if(!$user->hasPermissionTo('Edit Product') && $user->id != $product->admin_id){
+            Session::flash('failure',"You Do Not Have Correct Permission");
+            return redirect()->back();
+        }
+
         $this->validate($request, [
             'name' => ['required','min:2','max:191',
                         Rule::unique('products')->ignore($product->id),],
-            'price' => 'required|max:191',
+            'price' => 'required|integer',
             'image' => 'nullable|image',
             'brand_id' => 'required|exists:brands,id',
             'sub_category_id' => 'required|exists:sub_categories,id',
+            'quantity' => 'required|numeric',
+            'description' => 'nullable',
         ]);
         
         $product->brand_id = $request->brand_id;
@@ -121,6 +180,13 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
+
+        $user = Auth::guard('admin')->user();
+        if(!$user->hasPermissionTo('Delete Product') && $user->id != $product->admin_id){
+            Session::flash('failure',"You Do Not Have Correct Permission");
+            return redirect()->back();
+        }
+
         $product = Product::findOrFail($id);
         $deletedName = $product->name;
         // then delete the image file too

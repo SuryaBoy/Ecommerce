@@ -1,5 +1,5 @@
-<html>
-<head>
+<!-- <html>
+    <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
@@ -47,46 +47,72 @@
             display: block;
         }
     </style>
-</head>
-<body>
+    </head>
+    <body>
+
+    <div class="container">
+        <div class="dropdown">
+            <button class="dropbtn" id="category">Category
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <ul href="#">
+                    <li id="subcategory"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $("#category").hover(function () {
+            var subcategory = $('#subcategory').val();
+
+            $.ajaxSetup({
+                           headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+                       });
+           $.ajax({
+                type: "GET",
+                data: { 'id' : subcategory, },
+                url: "/getCat",
+                success: function (data) {
+                    console.log(data);
+                    $("#subcategory").append(data);
+                }
+            });
+
+        });
+    });
+    </script>
+
+
+    </body>
+</html> -->
+
+@extends('layouts.app')
+
+@section('content')
 
 <div class="container">
-    <div class="dropdown">
-        <button class="dropbtn" id="category">Category
-            <i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-            <ul href="#">
-                <li id="subcategory"></li>
-            </ul>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Dashboard</div>
+
+                <div class="panel-body">
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    You are logged in!
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-$(document).ready(function() {
-    $("#category").hover(function () {
-        var subcategory = $('#subcategory').val();
-
-        $.ajaxSetup({
-                       headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
-                   });
-       $.ajax({
-            type: "GET",
-            data: { 'id' : subcategory, },
-            url: "/getCat",
-            success: function (data) {
-                console.log(data);
-                $("#subcategory").append(data);
-            }
-        });
-
-    });
-});
-</script>
-
-
-</body>
-</html>
+@endsection

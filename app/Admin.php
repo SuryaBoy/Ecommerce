@@ -5,10 +5,13 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\AdminResetPasswordNotification;
+use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasRoles;
+
+    protected $guard_name = 'admin';
 
     protected $guard = 'admin';
 
@@ -25,5 +28,14 @@ class Admin extends Authenticatable
 	{
 	    $this->notify(new AdminResetPasswordNotification($token));
 	}
+
+    public function products()
+    {
+        return $this->hasMany('App\Product');
+    }
+    public function orderNotifications()
+    {
+        return $this->morphMany('App\OrderNotification', 'notifiable');
+    }
 
 }

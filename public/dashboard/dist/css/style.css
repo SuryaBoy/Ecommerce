@@ -6,3 +6,38 @@
 .help-block{
 	color:red;
 }
+
+.sch-prod-wrap{
+	height:220px;
+	padding:10px 0;
+}
+
+.prod-img{
+	height:100%;
+	max-width: 250px;
+	float:left;
+	margin-right:10px;
+}
+
+.desc-prod{
+	display: inline-block;
+	width:70%;
+}
+
+.desc-prod p{
+	margin:2px 0;
+}
+
+.src-tbl{
+	width:100%;
+	position:absolute;
+	bottom:0;
+	left:0;
+	z-index: 100;
+}
+.src-tbl tr td{
+	background-color: white;
+}
+#iq{
+	position:relative;
+}

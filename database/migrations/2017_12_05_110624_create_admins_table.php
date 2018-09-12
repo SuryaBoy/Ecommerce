@@ -19,8 +19,8 @@ class CreateAdminsTable extends Migration
             $table->string('email')->unique();
             $table->string('job_title');
 
-            $table->integer('role_id')->unsigned()->default(2);
-            $table->foreign('role_id')->references('id')->on('roles');
+            // $table->integer('role_id')->unsigned()->default(2);
+            // $table->foreign('role_id')->references('id')->on('roles');
 
             $table->string('password');
             $table->rememberToken();

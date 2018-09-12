@@ -5,27 +5,36 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Category;
 use App\SubCategory;
+use App\Product;
 use Illuminate\Support\Facades\DB;
 use Session;
 
 
-class SubCategoriesController extends Controller
+class SubCategoriesController extends ExtendController
 {
     public function index()
     {
-        $subcategories = SubCategory::all();
-        return view('admin.subcategories.index',compact('subcategories'));
+        $array = Session::pull('breadcrumb');
+        Session::forget('breadcrumb');
+        Session::push('breadcrumb',$array[0]);
+        Session::push('breadcrumb',['Sub Category'=>route('subcategories.index'),'active'=>'List']);
+        $this->website['subcategories'] = SubCategory::all();
+        return view('admin.subcategories.index',$this->website);
     }
 
     public function create(Request $request)
     {
-        $subcategories = Category::all();
-        return view('admin.subcategories.create',compact('subcategories'));
+        Session::push('breadcrumb',['Create'=>route('subcategories.create'),'active'=>'Create']);
+        $this->website['subcategories'] = Category::all();
+        return view('admin.subcategories.create',$this->website);
     }
 
     public function show($id)
     {
-        
+        Session::push('breadcrumb',['Show'=>route('subcategories.show', $id),'active'=>'Show']);
+        $this->website['subcategory'] = SubCategory::find($id);
+        $this->website['products'] = Product::where('sub_category_id',$id)->paginate($this->default_pagination_limit);
+        return view('admin.subcategories.show',$this->website);
     }
 
     public function store(Request $request)
@@ -46,8 +55,9 @@ class SubCategoriesController extends Controller
 
     public function edit($id)
     {
-        $subcategories = SubCategory::findOrFail($id);
-        return view('admin.subcategories.edit',compact('subcategories'));
+        Session::push('breadcrumb',['Edit'=>route('subcategories.edit',$id),'active'=>'Edit']);
+        $this->website['subcategories'] = SubCategory::findOrFail($id);
+        return view('admin.subcategories.edit',$this->website);
     }
 
     public function update(Request $request, $id)

@@ -2,10 +2,10 @@
 
 use Illuminate\Database\Seeder;
 
-class UserTableSeeder extends Seeder
+class UsersTableSeeder extends Seeder
 {
     public function run()
     {
-
+	    // factory(App\User::class, 1)->create();
     }
 }

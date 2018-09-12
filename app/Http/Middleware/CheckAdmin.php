@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Auth;
+use App\Admin;
+use Session;
 
 class CheckAdmin
 {
@@ -16,13 +18,18 @@ class CheckAdmin
      */
     public function handle($request, Closure $next)
     {
-        $roleId = Auth::guard('admin')->user()->role_id;
-        if($roleId==1){
-            
-            return $next($request);
+
+        $admin = Admin::all()->count();
+        if (!($admin == 1)) {
+            if (!Auth::guard('admin')->user()->hasPermissionTo('Administer roles & permissions')) //If user does //not have this permission
+            {
+                Session::flash('status',"You Do Not Have Right Permission For Such A Task !!");
+                return redirect(route('admin.dashboard'));
+                // abort('401');
+            }
         }
 
-        return redirect(route('admin.dashboard'));
+        return $next($request);
 
     }
 }

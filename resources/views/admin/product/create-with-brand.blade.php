@@ -48,7 +48,7 @@
 
                     <div class="form-group">
                         <label>Product Name/Model</label>
-                        <input type="text" name="name" class="form-control"/>
+                        <input type="text" name="name" class="form-control" value="{{old('name')}}" />
                         @if($errors->first('name'))
                             <label class="help-block">
                                 <strong>{{$errors->first('name')}}</strong>
@@ -58,7 +58,7 @@
 
                     <div class="form-group">
                         <label for="image">Image</label>
-                        <input type="file" class="form-control" name="image">
+                        <input type="file" class="form-control" name="image" value="{{old('image')}}">
                         @if($errors->first('image'))
                             <label class="help-block">
                                 <strong>{{$errors->first('image')}}</strong>
@@ -68,7 +68,7 @@
 
                     <div class="form-group">
                         <label>Price</label>
-                        <input type="text" name="price" class="form-control"/>
+                        <input type="text" name="price" class="form-control" value="{{old('price')}}"/>
                         @if($errors->first('price'))
                             <label class="help-block">
                                 <strong>{{$errors->first('price')}}</strong>
@@ -78,7 +78,7 @@
 
                     <div class="form-group">
                         <label>Quantity</label>
-                        <input type="text" name="quantity" class="form-control"/>
+                        <input type="text" name="quantity" class="form-control" value="{{old('quantity')}}"/>
                         @if($errors->first('quantity'))
                             <label class="help-block">
                                 <strong>{{$errors->first('quantity')}}</strong>
@@ -88,7 +88,7 @@
 
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea class="form-control" name="description"></textarea>
+                        <textarea class="form-control" name="description">{{old('description')}}</textarea>
                         @if($errors->first('description'))
                             <label class="help-block">
                                 <strong>{{$errors->first('description')}}</strong>

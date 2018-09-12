@@ -17,9 +17,12 @@
       </div>
 
       <!-- search form (Optional) -->
-      <form action="#" method="get" class="sidebar-form">
+      <form action="{{route('search')}}" method="get" class="sidebar-form" autocomplete="off">
         <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
+          <input list="suggestions" id="q" type="text" name="q" class="form-control" placeholder="Search Product...">
+          <datalist id="suggestions">
+
+          </datalist>
           <span class="input-group-btn">
               <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
               </button>
@@ -60,6 +63,32 @@
           <a href="{{route('product.index')}}">
             <i class="fa fa-bars"></i><span>Products</span>
           </a>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="glyphicon glyphicon-record"></i><span>Orders</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li>
+              <a href="{{route('order.showProcessingOrders')}}">
+                <i class="fa fa-circle-o"></i><span>Processing Orders</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{route('order.showShippingOrders')}}">
+                <i class="fa fa-circle-o"></i><span>Shipping Orders</span>
+              </a>
+            </li>
+            <li>
+              <a href="{{route('order.showDeliveredOrders')}}">
+                <i class="fa fa-circle-o"></i><span>Delivered Orders</span>
+              </a>
+            </li>
+          </ul>
         </li>
 
       </ul>
