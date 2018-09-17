@@ -50,7 +50,7 @@ class OrderController extends ExtendController
     	// return $order;
 
         // dd($this->website['order']);
-        if (Auth::guard('admin')->user()->hasAnyRole(['Admin', 'Super Admin']) ) {
+        if (Auth::guard('admin')->user()->hasAnyRole(['admin', 'Super Admin']) ) {
             $notifications = OrderNotification::where('notifiable_id', null)->where('order_id', $id)->where('viewed',0)->get();
             foreach ($notifications as $n) {
                 $n->update(['viewed' => true]);

@@ -12,11 +12,10 @@ class AdminTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('admins')->insert([
-            'name' => 'Admin',
-            'email' => 'admin@admin.com',
-            'password' => bcrypt('secret'),
-            'job_title' => 'Administrator',
-        ]);
+        factory(App\Admin::class,1)->create(
+            [
+                'name' => 'Admin',
+                'email' => 'admin@admin.com',
+            ]);
     }
 }
